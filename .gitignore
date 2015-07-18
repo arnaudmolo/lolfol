@@ -1,0 +1,4 @@
+node_modules
+app/styles.css
+app/scripts/*
+dist

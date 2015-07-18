@@ -1,0 +1,40 @@
+{
+  "name": "webpack-basic",
+  "version": "1.0.0",
+  "description": "Quick start for webpack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dev-server.js",
+    "dist": "node dist-server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^5.5.8",
+    "babel-loader": "^5.1.4",
+    "css-loader": "^0.14.5",
+    "del": "^1.2.0",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "html-webpack-plugin": "^1.5.2",
+    "ncp": "^2.0.0",
+    "node-libs-browser": "^0.5.2",
+    "node-sass": "^3.2.0",
+    "react": "^0.13.3",
+    "react-hot-loader": "^1.2.7",
+    "sass-loader": "^1.0.2",
+    "style-loader": "^0.12.3",
+    "uglify-js": "^2.4.23",
+    "webpack": "^1.9.11",
+    "webpack-dev-server": "^1.9.0"
+  },
+  "dependencies": {
+    "babel": "^5.5.8",
+    "classnames": "^2.1.2",
+    "d3": "^3.5.5",
+    "flux": "^2.0.3",
+    "keymirror": "^0.1.1",
+    "object-assign": "^3.0.0",
+    "react": "^0.13.3",
+    "uid": "0.0.2"
+  }
+}

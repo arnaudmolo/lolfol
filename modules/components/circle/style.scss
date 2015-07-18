@@ -1,0 +1,32 @@
+
+:local(.circle) {
+  fill-opacity: 0.85;
+  transition: opacity 0.25s ease-out;
+
+  &.hidden {
+    opacity: 0.1;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.circle-enter {
+  opacity: 0.01;
+}
+
+.circle-enter.circle-enter-active {
+  opacity: 1;
+}
+
+.circle-leave {
+  opacity: 1;
+}
+
+.circle-leave.circle-leave-active {
+  opacity: 0.01;
+}
