@@ -5,7 +5,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require("path");
 
-const appScripts = [path.resolve(__dirname, "modules", "_app.jsx")];
+const appScripts = [path.resolve(__dirname, "modules", "app.jsx")];
 const modulesPath = path.resolve(__dirname, "modules");
 const buildPath = path.resolve(__dirname, "build");
 
