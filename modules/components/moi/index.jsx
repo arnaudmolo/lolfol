@@ -21,7 +21,6 @@ class Moi extends Component {
     super(props, context)
     this.state = {mouse: {top: 0, left: 0}};
     this.getValues = this.getValues.bind(this);
-    // this.setState  = this.setState.bind(this);
     this[onMouseMove] = this[onMouseMove].bind(this);
   }
 
@@ -30,7 +29,7 @@ class Moi extends Component {
   }
 
   [onMouseMove]({pageX, pageY}) {
-    this.setState({mouse: {top: pageX, left: pageY}});
+    this.setState({mouse: {top: pageY, left: pageX}});
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -43,8 +42,8 @@ class Moi extends Component {
       <div className="container"
         style={{
           width: "100vw",
-          height: "100vh",
-          backgroundColor: "cyan"
+          height: "75vw",
+          backgroundColor: "black"
         }}
         onMouseMove={this[onMouseMove]}
         onClick={circular}
@@ -53,7 +52,9 @@ class Moi extends Component {
           endValue={this.getValues}
         >
           {({val}) => {
-            return (<img style={{...style, ...val}} src={`./img/face-${counter.get('counter')}.jpg`} width={"100%"} />)
+            return (<img style={{...style, ...{
+              WebkitTransform: `translate3d(${val.left - 25}px, ${val.top - 25}px, 0)`,
+            }}} src={`./img/face-${counter.get('counter')}.jpg`} width={"100%"} />)
           }}
         </Spring>
       </div>
