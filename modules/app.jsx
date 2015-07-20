@@ -4,8 +4,6 @@ import d3 from "d3";
 
 import style from "./stylesheet.scss";
 
-import Main from './components/main';
-
-console.log('kouk', Main);
+import Main from './containers/main';
 
 React.render(<Main />, document.querySelector("#app"));
