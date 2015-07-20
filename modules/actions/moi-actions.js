@@ -15,13 +15,15 @@ export function decrement() {
 export function circular() {
   return (dispatch, getState) => {
 
-    const {counter, increasing} = getState().counter;
+    const {counter}  = getState();
+    const increasing = counter.get('increasing');
+    const count      = counter.get('counter');
 
-    if (increasing == true && counter <= 2) {
+    if (increasing === true && count <= 2) {
       return dispatch(increment());
     }
 
-    if (counter <= 0) {
+    if (count <= 0) {
       return dispatch(increment());
     }
 

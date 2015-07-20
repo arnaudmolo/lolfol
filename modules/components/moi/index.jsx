@@ -10,8 +10,15 @@ export default class Moi extends Component {
 
   render() {
     const {circular, counter} = this.props;
+
+    const style = {
+      // backgroundImage: `url(./img/face-${counter.get('counter')}.jpg)`,
+      width: '100vw',
+      height: '100vh',
+    }
+
     return (
-      <img src={`./img/face-${counter.counter}.jpg`} width={300} onClick={circular} />
+      <img style={style} src={`./img/face-${counter.get('counter')}.jpg`} width={"100%"} onClick={circular} />
     );
   }
 
