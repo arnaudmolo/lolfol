@@ -3,11 +3,11 @@ import {Spring} from 'react-motion';
 import {range} from 'd3';
 import autobind from 'autobind-decorator';
 
-var once = 0;
+import {Surface, Image, Text} from 'react-canvas';
 
 const style = {
-  width: '100px',
-  height: '100px',
+  width: 300,
+  height: 150,
   position: 'absolute',
   left: 0,
   top: 0
@@ -32,10 +32,6 @@ class Moi extends Component {
     this.setState({mouse: {top: pageY, left: pageX}});
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
   render() {
     const {circular, counter} = this.props;
     return (
@@ -48,15 +44,13 @@ class Moi extends Component {
         onMouseMove={this[onMouseMove]}
         onClick={circular}
       >
-        <Spring
-          endValue={this.getValues}
-        >
-          {({val}) => {
-            return (<img style={{...style, ...{
-              WebkitTransform: `translate3d(${val.left - 25}px, ${val.top - 25}px, 0)`,
-            }}} src={`./img/face-${counter.get('counter')}.jpg`} width={"100%"} />)
-          }}
-        </Spring>
+        <Surface width={1000} height={1000} left={0} top={0}>
+          <Spring endValue={this.getValues}>
+            {({val}) => {
+              return <Image style={{...style, ...val}} src={`./img/face-${counter.get('counter')}.jpg`} />
+            }}
+          </Spring>
+        </Surface>
       </div>
     );
   }
