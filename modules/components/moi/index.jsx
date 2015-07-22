@@ -4,6 +4,7 @@ import {range} from 'd3';
 import autobind from 'autobind-decorator';
 
 import Circle from './../canvas/circle';
+import Bezier from './../canvas/bezier';
 
 import {Surface, Image, Text, Group} from 'react-canvas';
 
@@ -11,8 +12,8 @@ const style = {
   width: 300,
   height: 150,
   position: 'absolute',
-  left: 0,
-  top: 0
+  x: 0,
+  y: 0
 };
 
 const onMouseMove = Symbol();
@@ -21,7 +22,7 @@ class Moi extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = {mouse: {top: 0, left: 0}};
+    this.state = {mouse: {y: 0, x: 0}};
     this.getValues = this.getValues.bind(this);
     this[onMouseMove] = this[onMouseMove].bind(this);
   }
@@ -31,7 +32,7 @@ class Moi extends Component {
   }
 
   [onMouseMove]({pageX, pageY}) {
-    this.setState({mouse: {top: pageY, left: pageX}});
+    this.setState({mouse: {y: pageY, x: pageX}});
   }
 
   render() {
@@ -46,14 +47,21 @@ class Moi extends Component {
         onMouseMove={this[onMouseMove]}
         onClick={circular}
       >
-        <Surface width={innerWidth} height={1000} left={0} top={0}>
+        <Surface width={innerWidth} height={1000} x={0} y={0}>
           <Spring endValue={this.getValues}>
             {(rest) => {
               const {val} = rest;
+              let x = val.x;
+              let mirroredX = x;
+              if (-x <= 0) {
+                mirroredX = -x + innerWidth
+              }
+              const mirroredVal = {x: mirroredX, y: val.y}
               return (
                 <Group>
                   <Circle style={{...style, ...val}} />
-                  <Circle style={{...style, ...{left: -val.left, top: val.top}}} />
+                  <Bezier style={{start: val, end: mirroredVal}} />
+                  <Circle style={{...style, ...mirroredVal}} />
                 </Group>
               )
             }}
