@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {Spring} from 'react-motion';
+import {Spring, TransitionSpring} from 'react-motion';
 import {range} from 'd3';
 import autobind from 'autobind-decorator';
 
@@ -7,6 +7,8 @@ import Circle from './../canvas/circle';
 import Bezier from './../canvas/bezier';
 
 import {Surface, Image, Text, Group} from 'react-canvas';
+
+const {cos, sin, PI} = Math;
 
 const style = {
   width: 300,
@@ -31,33 +33,23 @@ class Moi extends Component {
   }
 
   getValues(currentPositions) {
-    const {mouse} = this.state;
-    const {x, y}  = mouse;
+    const {x, y}  = {...this.state.mouse};
+    const counter = this.props.counter.get('counter');
 
     const mirroredX = -x<0?-x+innerWidth:x;
     const mirroredY = -y<0?-y+innerHeight:y;
 
-    if (this.props.counter.get('counter')%2) {
-      return {
-        val: {
-          left: mouse,
-          right: {
-            x: mirroredX,
-            y: mirroredY
-          }
-        }
-      };
-    }
-
     return {
-      val: {
-        left: mouse,
-        right: {
-          x: mirroredX,
-          y: mouse.y
+      val: range(counter + 1).map(function(_, i) {
+        const cosinus = Math.floor(cos(i/(counter+1) * PI));
+        const sinus   = Math.floor(sin(i/(counter+1) * PI + PI/2));
+        return {
+          x: x * cosinus,
+          y: y * sinus
         }
-      }
-    };
+      })
+    }
+    return res;
   }
 
   [onMouseMove]({pageX, pageY}) {
@@ -65,7 +57,7 @@ class Moi extends Component {
   }
 
   render() {
-    const {circular, counter} = this.props;
+    const {increment, counter} = this.props;
     return (
       <div className="container"
         style={{
@@ -77,21 +69,20 @@ class Moi extends Component {
           left: 0
         }}
         onMouseMove={this[onMouseMove]}
-        onClick={circular}
+        onClick={increment}
       >
         <Surface width={innerWidth} height={innerHeight} x={0} y={0}>
-          <Spring endValue={this.getValues}>
+          <TransitionSpring endValue={this.getValues}>
             {({val}) => {
-              const {left, right} = val;
               return (
                 <Group>
-                  <Circle style={{...style, ...left}} />
-                  <Bezier style={{start: left, end: right}} />
-                  <Circle style={{...style, ...right}} />
+                  {val.map((val, i) => {
+                    return (<Circle key={i} style={val} />)
+                  })}
                 </Group>
-              )
+              );
             }}
-          </Spring>
+          </TransitionSpring>
         </Surface>
       </div>
     );

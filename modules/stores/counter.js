@@ -22,3 +22,8 @@ export default function counter(state = initialState, action) {
       return state;
   }
 }
+
+
+// <Circle style={{...style, ...left}} />
+// <Bezier style={{start: left, end: right}} />
+// <Circle style={{...style, ...right}} />
