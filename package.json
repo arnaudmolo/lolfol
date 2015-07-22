@@ -28,6 +28,7 @@
     "webpack-dev-server": "^1.9.0"
   },
   "dependencies": {
+    "autobind-decorator": "^1.2.0",
     "babel": "^5.5.8",
     "classnames": "^2.1.2",
     "d3": "^3.5.5",
@@ -36,8 +37,9 @@
     "keymirror": "^0.1.1",
     "object-assign": "^3.0.0",
     "react": "^0.13.3",
-    "react-canvas": "0.0.1",
+    "react-canvas": "git://github.com/fdecampredon/react-canvas.git#custom-react-component",
     "react-motion": "^0.1.0",
+    "redux": "^0.12.0",
     "uid": "0.0.2"
   }
 }

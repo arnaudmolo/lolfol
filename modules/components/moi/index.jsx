@@ -3,7 +3,9 @@ import {Spring} from 'react-motion';
 import {range} from 'd3';
 import autobind from 'autobind-decorator';
 
-import {Surface, Image, Text} from 'react-canvas';
+import Circle from './../canvas/circle';
+
+import {Surface, Image, Text, Group} from 'react-canvas';
 
 const style = {
   width: 300,
@@ -47,7 +49,9 @@ class Moi extends Component {
         <Surface width={1000} height={1000} left={0} top={0}>
           <Spring endValue={this.getValues}>
             {({val}) => {
-              return <Image style={{...style, ...val}} src={`./img/face-${counter.get('counter')}.jpg`} />
+              return (
+                <Circle style={{...style, ...val}} />
+              )
             }}
           </Spring>
         </Surface>
