@@ -6,7 +6,6 @@ function colorGenerator(x, y){
 
 registerLayerType('circle', function(ctx, {x, y}) {
   const color = colorGenerator(x, y);
-
   ctx.beginPath();
   ctx.arc(x, y, 20, 0, 2 * Math.PI, false);
   ctx.fillStyle = color;

@@ -49,14 +49,14 @@ class Moi extends Component {
       >
         <Surface width={innerWidth} height={1000} x={0} y={0}>
           <Spring endValue={this.getValues}>
-            {(rest) => {
-              const {val} = rest;
-              let x = val.x;
-              let mirroredX = x;
-              if (-x <= 0) {
-                mirroredX = -x + innerWidth
+            {({val}) => {
+              const {x, y} = val;
+              const mirroredX = -x<0?-x+innerWidth:x;
+              var mirroredY = -y<0?-y+innerHeight:y;
+              if (counter.get('counter')%2) {
+                mirroredY = val.y;
               }
-              const mirroredVal = {x: mirroredX, y: val.y}
+              const mirroredVal = {x: mirroredX, y: mirroredY}
               return (
                 <Group>
                   <Circle style={{...style, ...val}} />
