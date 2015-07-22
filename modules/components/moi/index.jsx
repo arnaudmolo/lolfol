@@ -20,6 +20,13 @@ const style = {
 
 const onMouseMove = Symbol();
 
+var center = {
+  x: innerWidth / 2,
+  y: innerHeight / 2
+};
+
+const radius = 200;
+
 class Moi extends Component {
 
   constructor(props, context) {
@@ -28,27 +35,33 @@ class Moi extends Component {
     this.getValues = this.getValues.bind(this);
     this[onMouseMove] = this[onMouseMove].bind(this);
     window.onresize = () => {
+      center = {
+        x: innerWidth / 2,
+        y: innerHeight / 2
+      }
       this.forceUpdate()
     }
   }
 
-  getValues(currentPositions) {
+  getValues() {
     const {x, y}  = {...this.state.mouse};
-    const counter = this.props.counter.get('counter');
+    const nbCircles = this.props.counter.get('counter') + 1;
 
-    const mirroredX = -x<0?-x+innerWidth:x;
-    const mirroredY = -y<0?-y+innerHeight:y;
-
-    return {
-      val: range(counter + 1).map(function(_, i) {
-        const cosinus = Math.floor(cos(i/(counter+1) * PI));
-        const sinus   = Math.floor(sin(i/(counter+1) * PI + PI/2));
-        return {
-          x: x * cosinus,
-          y: y * sinus
+    const res = range(nbCircles).map(function(_, i) {
+      const radiant = i / nbCircles
+      const cosinus = cos(radiant * PI * 2);
+      const sinus   = sin(radiant * PI * 2);
+      return {
+        val: {
+          x: x + radius * cosinus,
+          y: y + radius * sinus
         }
-      })
-    }
+      }
+    }).reduce((o, v, i) => {
+      o[i] = v;
+      return o;
+    }, {});
+
     return res;
   }
 
@@ -57,7 +70,7 @@ class Moi extends Component {
   }
 
   render() {
-    const {increment, counter} = this.props;
+    const {increment, circular, counter} = this.props;
     return (
       <div className="container"
         style={{
@@ -69,14 +82,23 @@ class Moi extends Component {
           left: 0
         }}
         onMouseMove={this[onMouseMove]}
-        onClick={increment}
+        onClick={circular}
       >
         <Surface width={innerWidth} height={innerHeight} x={0} y={0}>
           <TransitionSpring endValue={this.getValues}>
-            {({val}) => {
+            {(rest) => {
               return (
                 <Group>
-                  {val.map((val, i) => {
+                  {Object.keys(rest).map((i) => {
+                    const {val} = rest[i];
+                    if (i >= 1) {
+                      return (
+                        <Group key={i}>
+                          <Bezier style={{start: val, end: rest[i-1].val}} />
+                          <Circle style={val} />
+                        </Group>
+                      )
+                    }
                     return (<Circle key={i} style={val} />)
                   })}
                 </Group>

@@ -19,7 +19,7 @@ export function circular() {
     const increasing = counter.get('increasing');
     const count      = counter.get('counter');
 
-    if (increasing === true && count <= 2) {
+    if (increasing === true && count <= 20) {
       return dispatch(increment());
     }
 
