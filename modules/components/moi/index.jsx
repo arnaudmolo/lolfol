@@ -25,10 +25,39 @@ class Moi extends Component {
     this.state = {mouse: {y: 0, x: 0}};
     this.getValues = this.getValues.bind(this);
     this[onMouseMove] = this[onMouseMove].bind(this);
+    window.onresize = () => {
+      this.forceUpdate()
+    }
   }
 
   getValues(currentPositions) {
-    return {val: this.state.mouse};
+    const {mouse} = this.state;
+    const {x, y}  = mouse;
+
+    const mirroredX = -x<0?-x+innerWidth:x;
+    const mirroredY = -y<0?-y+innerHeight:y;
+
+    if (this.props.counter.get('counter')%2) {
+      return {
+        val: {
+          left: mouse,
+          right: {
+            x: mirroredX,
+            y: mirroredY
+          }
+        }
+      };
+    }
+
+    return {
+      val: {
+        left: mouse,
+        right: {
+          x: mirroredX,
+          y: mouse.y
+        }
+      }
+    };
   }
 
   [onMouseMove]({pageX, pageY}) {
@@ -41,27 +70,24 @@ class Moi extends Component {
       <div className="container"
         style={{
           width: innerWidth,
-          height: 1000,
-          backgroundColor: "black"
+          height: innerHeight,
+          backgroundColor: "black",
+          position: "absolute",
+          top: 0,
+          left: 0
         }}
         onMouseMove={this[onMouseMove]}
         onClick={circular}
       >
-        <Surface width={innerWidth} height={1000} x={0} y={0}>
+        <Surface width={innerWidth} height={innerHeight} x={0} y={0}>
           <Spring endValue={this.getValues}>
             {({val}) => {
-              const {x, y} = val;
-              const mirroredX = -x<0?-x+innerWidth:x;
-              var mirroredY = -y<0?-y+innerHeight:y;
-              if (counter.get('counter')%2) {
-                mirroredY = val.y;
-              }
-              const mirroredVal = {x: mirroredX, y: mirroredY}
+              const {left, right} = val;
               return (
                 <Group>
-                  <Circle style={{...style, ...val}} />
-                  <Bezier style={{start: val, end: mirroredVal}} />
-                  <Circle style={{...style, ...mirroredVal}} />
+                  <Circle style={{...style, ...left}} />
+                  <Bezier style={{start: left, end: right}} />
+                  <Circle style={{...style, ...right}} />
                 </Group>
               )
             }}
