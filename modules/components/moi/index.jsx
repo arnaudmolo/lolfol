@@ -10,6 +10,13 @@ import {Surface, Image, Text, Group} from 'react-canvas';
 
 const {cos, sin, PI} = Math;
 
+function arrayToObject(array) {
+  return array.reduce((o, v, i) => { 
+    o[i] = v;
+    return o;
+  }, {});
+}
+
 const style = {
   width: 300,
   height: 150,
@@ -47,7 +54,11 @@ class Moi extends Component {
     const {x, y}  = {...this.state.mouse};
     const nbCircles = this.props.counter.get('counter') + 1;
 
-    const res = range(nbCircles).map(function(_, i) {
+    if (nbCircles <= 1) {
+      return arrayToObject([{val: {x, y}}]);
+    }
+
+    const res = arrayToObject(range(nbCircles).map(function(_, i) {
       const radiant = i / nbCircles
       const cosinus = cos(radiant * PI * 2);
       const sinus   = sin(radiant * PI * 2);
@@ -57,10 +68,7 @@ class Moi extends Component {
           y: y + radius * sinus
         }
       }
-    }).reduce((o, v, i) => {
-      o[i] = v;
-      return o;
-    }, {});
+    }));
 
     return res;
   }
@@ -94,8 +102,8 @@ class Moi extends Component {
                     if (i >= 1) {
                       return (
                         <Group key={i}>
-                          <Bezier style={{start: val, end: rest[i-1].val}} />
                           <Circle style={val} />
+                          <Bezier style={{start: val, end: rest[i-1].val}} />
                         </Group>
                       )
                     }
