@@ -39,18 +39,22 @@ class Moi extends Component {
     return (
       <div className="container"
         style={{
-          width: "100vw",
-          height: "75vw",
+          width: innerWidth,
+          height: 1000,
           backgroundColor: "black"
         }}
         onMouseMove={this[onMouseMove]}
         onClick={circular}
       >
-        <Surface width={1000} height={1000} left={0} top={0}>
+        <Surface width={innerWidth} height={1000} left={0} top={0}>
           <Spring endValue={this.getValues}>
-            {({val}) => {
+            {(rest) => {
+              const {val} = rest;
               return (
-                <Circle style={{...style, ...val}} />
+                <Group>
+                  <Circle style={{...style, ...val}} />
+                  <Circle style={{...style, ...{left: -val.left, top: val.top}}} />
+                </Group>
               )
             }}
           </Spring>

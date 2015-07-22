@@ -3,13 +3,23 @@ import {Group, registerLayerType, createCanvasComponent} from 'react-canvas';
 import createComponent from 'react-canvas/lib/createComponent';
 import LayerMixin from 'react-canvas/lib/LayerMixin';
 
-registerLayerType('circle', function(ctx, layer) {
+function colorGenerator(x, y){
+  return `rgb(${Math.floor(x/innerWidth*255)}, ${Math.floor(y/innerHeight*255)}, ${200})`;
+}
+
+registerLayerType('circle', function(ctx, {left, top}) {
+  const color = colorGenerator(left, top);
+  
+  if (left <= 0) {
+    left = left + innerWidth
+  };
+
   ctx.beginPath();
-  ctx.arc(layer.left, layer.top, 20, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'green';
+  ctx.arc(left, top, 20, 0, 2 * Math.PI, false);
+  ctx.fillStyle = color;
   ctx.fill();
   ctx.lineWidth = 5;
-  ctx.strokeStyle = '#003300';
+  ctx.strokeStyle = color;
   ctx.stroke();
 });
 
@@ -25,22 +35,5 @@ export default createCanvasComponent({
     layer.shadowBlur = style.shadowBlur || 0;
     layer.left = style.left;
     layer.top  = style.top;
-  },
-
-  // mountComponent(rootID, transaction, context) {
-  //   const props = this._currentElement.props;
-  //   const layer = this.node;
-  //   this.applyLayerProps({}, props);
-  //   this.applyCircleProps({}, props);
-  //   return layer;
-  // },
-
-  // receiveComponent(nextComponent, transaction, context) {
-  //   const prevProps = this._currentElement.props;
-  //   const props = nextComponent.props;
-  //   this.applyLayerProps(prevProps, props);
-  //   // this.applyCircleProps(prevProps, props);
-  //   this._currentElement = nextComponent;
-  // }
-
+  }
 });
