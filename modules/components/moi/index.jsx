@@ -36,11 +36,15 @@ const radius = 200;
 
 class Moi extends Component {
 
+  state = {
+    mouse: {
+      y: 0,
+      x: 0
+    }
+  };
+
   constructor(props, context) {
     super(props, context)
-    this.state = {mouse: {y: 0, x: 0}};
-    this.getValues = this.getValues.bind(this);
-    this[onMouseMove] = this[onMouseMove].bind(this);
     window.onresize = () => {
       center = {
         x: innerWidth / 2,
@@ -50,7 +54,7 @@ class Moi extends Component {
     }
   }
 
-  getValues() {
+  getValues = () => {
     const {x, y}  = {...this.state.mouse};
     const nbCircles = this.props.counter.get('counter') + 1;
 
@@ -73,7 +77,7 @@ class Moi extends Component {
     return res;
   }
 
-  [onMouseMove]({pageX, pageY}) {
+  [onMouseMove] = ({pageX, pageY}) => {
     this.setState({mouse: {y: pageY, x: pageX}});
   }
 
@@ -97,18 +101,27 @@ class Moi extends Component {
             {(rest) => {
               return (
                 <Group>
-                  {Object.keys(rest).map((i) => {
-                    const {val} = rest[i];
-                    if (i >= 1) {
-                      return (
-                        <Group key={i}>
-                          <Circle style={val} />
-                          <Bezier style={{start: val, end: rest[i-1].val}} />
-                        </Group>
+                  {() => {
+                    const indexKeys = Object.keys(rest);
+                    const all = indexKeys.map((i) => {
+                      const {val} = rest[i];
+                      if (i >= 1) {
+                        return (
+                          <Group key={i}>
+                            <Circle style={val} />
+                            <Bezier style={{start: val, end: rest[i-1].val}} />
+                          </Group>
+                        )
+                      }
+                      return (<Circle key={i} style={val} />)
+                    })
+                    if (indexKeys.length >= 3) {
+                      all.push(
+                        <Bezier key="alone" style={{start: rest[0].val, end: rest[indexKeys.length - 1].val}} />
                       )
                     }
-                    return (<Circle key={i} style={val} />)
-                  })}
+                    return all;
+                  }()}
                 </Group>
               );
             }}
