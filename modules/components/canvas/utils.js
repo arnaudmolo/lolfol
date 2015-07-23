@@ -1,5 +1,3 @@
-import d3 from 'd3'
-
 export function circle(coordinates) {
   var circle = [],
       length = 0,

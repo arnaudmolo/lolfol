@@ -47,8 +47,6 @@ const circleShape = circle(res);
 
 const {cos, sin, PI} = Math;
 
-console.log(res.length);
-
 function arrayToObject(array) {
   return array.reduce((o, v, i) => { 
     o[i] = v;

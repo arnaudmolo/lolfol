@@ -17,10 +17,10 @@ registerLayerType('shape', function(ctx, layer) {
     return
   }
   ctx.beginPath()
-  ctx.moveTo((mouseX - MOUSE_OFFSET) + coordinates[0][0], (mouseY - MOUSE_OFFSET) + coordinates[0][1])
+  ctx.moveTo(coordinates[0][0], coordinates[0][1])
   coordinates
-    .forEach(function([x, y]) {
-      ctx.lineTo((mouseX - MOUSE_OFFSET) + x, (mouseY - MOUSE_OFFSET) + y)
+    .forEach(([x, y]) => {
+      ctx.lineTo(x, y)
     })
   ctx.strokeStyle = "cyan"
   ctx.stroke()
