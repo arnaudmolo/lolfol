@@ -19,6 +19,5 @@ export default createCanvasComponent({
 
     layer.start = style.start;
     layer.end   = style.end;
-
   }
 });

@@ -7,8 +7,6 @@ import * as stores from '../stores';
 
 const redux = createRedux(stores);
 
-console.log(stores);
-
 export default class App extends Component {
   render() {
     return (
