@@ -16,7 +16,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <GeneratedImage src={`/img/logo-shape.png`} width={innerWidth} height={innerHeight} />
+      <GeneratedImage src={`/img/face-0.jpg`} width={innerWidth} height={innerHeight} />
     );
   }
 }

@@ -26,8 +26,8 @@ const RawCanvasComponent = createCanvasComponent({
     const layer = this.node
     layer.imageContext = props.imageContext
     layer.t = props.t
-    layer.width = props.width * devicePixelRatio
-    layer.height = props.height * devicePixelRatio
+    layer.width = props.width
+    layer.height = props.height
   }
 })
 
@@ -52,7 +52,7 @@ export default class GeneratedImage extends Component {
       this.setState({loaded: true, val: 0.7})
     }, 10)
 
-    // this.launchInterval()
+    this.launchInterval()
   }
 
   launchInterval() {
@@ -61,7 +61,7 @@ export default class GeneratedImage extends Component {
       if (this.state.val <= 1) {
         this.launchInterval()
       }
-    }, 3000)
+    }, 300)
   }
 
   getContext = context => {
@@ -74,18 +74,18 @@ export default class GeneratedImage extends Component {
 
   render() {
     const {src, width, height} = this.props
-    const {val} = this.state
+    const {val, imageContext, loaded} = this.state
     return (
-      <div>
+      <div style={{position: 'absolute', left: 0, top: 0}}>
         <div style={divStyle}>
           <Surface top={0} left={0} width={width} height={height} getContext={this.getContext}>
             <Image style={{...getImageStyle(), ...{width, height}}} src={src} onLoad={this.imageLoaded}/>
           </Surface>
         </div>
-        <div style={{opacity: 0.5, width: width, height: height, transform: `scale(${1/devicePixelRatio}) translate(-${width / devicePixelRatio}px, -${height / devicePixelRatio}px)`, ...divStyle}}>
-          <Surface top={0} left={0} width={width * devicePixelRatio} height={height * devicePixelRatio}>
-            {this.state.loaded?(
-              <RawCanvasComponent t={val} imageContext={this.state.imageContext} width={width} height={height} />
+        <div style={{width: width, height: height, ...divStyle}}>
+          <Surface top={0} left={0} width={width} height={height} style={{opacity: 0}}>
+            {loaded?(
+              <RawCanvasComponent t={val} imageContext={imageContext} width={width} height={height} />
             ):null}
           </Surface>
         </div>

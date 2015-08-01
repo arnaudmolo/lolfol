@@ -12,6 +12,10 @@ function getGlitchStyle(t = 0.2) {
 
 function done(ctx) {
   return function(imageData) {
+    if (ctx.scaled == null) {
+      ctx.scale(1 / devicePixelRatio, 1 / devicePixelRatio)
+      ctx.scaled = true
+    }
     ctx.drawImage(imageData, 0, 0)
   }
 }
@@ -19,7 +23,7 @@ function done(ctx) {
 registerLayerType('generatedImage', function(ctx, layer) {
   if (layer.imageContext) {
     const {t, imageContext, width, height} = layer
-    const imageData = imageContext.getImageData(0, 0, width, height)
+    const imageData = imageContext.getImageData(0, 0, width * devicePixelRatio, height * devicePixelRatio)
     const glitchedData = glitchImageData(imageData, getGlitchStyle(t), done(ctx))
   }
 })
