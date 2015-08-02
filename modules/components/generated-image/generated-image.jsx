@@ -4,6 +4,12 @@ import {Surface, Image, Group, createCanvasComponent} from 'react-canvas'
 import {Spring} from 'react-motion'
 import './layer-type'
 
+import Three from 'three'
+
+import * as X from './../../../libs/threex.badtvpproc/threex.badtvdatgui'
+
+console.log(Three, X);
+
 function getImageStyle() {
   return {
     top: 0,
