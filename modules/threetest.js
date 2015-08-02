@@ -34,26 +34,15 @@ video.src    = "videos/fits.mp4";
 video.play();
 // create the texture
 
-var texture = new Texture( video );
-texture.minFilter   = NearestFilter;
-texture.magFilter   = NearestFilter;
-onRenderFcts.push(function(delta, now){
-    if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
-        if ( texture ) texture.needsUpdate = true;
-    }       
-})
-
 const geometry = new PlaneGeometry(innerWidth, innerHeight)
-const material = new MeshBasicMaterial({map: texture})
+const material = new MeshBasicMaterial({map: ImageUtils.loadTexture('/img/face-0.jpg')})
 const mesh     = new Mesh(geometry, material)
 
 scene.add(mesh)
 
 const badTVPasses = new BadTVPasses()
 
-onRenderFcts.push(function(delta, now) {
-  badTVPasses.update(delta, now)
-})
+onRenderFcts.push(badTVPasses.update)
 
 addBadTVPasses2DatGui(badTVPasses)
 
