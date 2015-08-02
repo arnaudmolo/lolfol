@@ -48,23 +48,25 @@ export default class BadTVJamming {
     this.badTVSound.play()
     this.badTVPasses.params.preset(passesFirstLabel)
     this.badTVPasses.onParamsChange()
-    this.badTVPasses.tweenDelay = tween
+    this.badTVPasses.tweenDelay = tweenDelay
 
-    this.badTVPasses.addEventListener('tweenCompleted', () => {
+    const callback = () => {
       if( nShakeSteps === 0 ) return
       // count this shake
       nShakeSteps -= 1;
       if( nShakeSteps > 0 ){
         // start the next shake
-        badTVPasses.params.preset(passesFirstLabel)     
+        this.badTVPasses.params.preset(passesFirstLabel)     
       }else{
         // end all shake
-        badTVPasses.params.preset(passesLastLabel)
-        badTVPasses.removeEventListener('tweenCompleted', callback)
+        this.badTVPasses.params.preset(passesLastLabel)
+        this.badTVPasses.removeEventListener('tweenCompleted', callback)
         this.inProgress = false
       }
-      badTVPasses.onParamsChange()    
-    })
+      this.badTVPasses.onParamsChange()    
+    }
+
+    this.badTVPasses.addEventListener('tweenCompleted', callback)
   }
 
   preset(label) {

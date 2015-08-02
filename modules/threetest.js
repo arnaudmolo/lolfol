@@ -1,9 +1,9 @@
-import {
+import THREE, {
   WebGLRenderer,
   Scene,
   OrthographicCamera,
   PlaneGeometry,
-  MeshNormalMaterial,
+  MeshBasicMaterial,
   Mesh,
   Texture,
   NearestFilter,
@@ -33,6 +33,7 @@ video.volume = 0;
 video.src    = "videos/fits.mp4";
 video.play();
 // create the texture
+
 var texture = new Texture( video );
 texture.minFilter   = NearestFilter;
 texture.magFilter   = NearestFilter;
@@ -43,7 +44,7 @@ onRenderFcts.push(function(delta, now){
 })
 
 const geometry = new PlaneGeometry(innerWidth, innerHeight)
-const material = new MeshNormalMaterial({map: texture})
+const material = new MeshBasicMaterial({map: texture})
 const mesh     = new Mesh(geometry, material)
 
 scene.add(mesh)
