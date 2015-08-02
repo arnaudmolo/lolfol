@@ -42,6 +42,7 @@
     "react-motion": "^0.1.0",
     "redux": "^0.12.0",
     "three": "^0.71.0",
+    "three-copyshader": "0.0.1",
     "uid": "0.0.2"
   }
 }

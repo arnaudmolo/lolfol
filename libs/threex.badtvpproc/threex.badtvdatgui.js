@@ -1,7 +1,5 @@
 import dat from 'dat-gui';
 
-console.log(dat);
-
 /**
  * vendor.js framework definition
  * @type {Object}

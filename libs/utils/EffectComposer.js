@@ -1,22 +1,23 @@
-import TREE, {
+import THREE, {
   LinearFilter,
   RGBFormat,
   WebGLRenderTarget,
-  CopyShader,
-  MaskPass,
-  ClearMaskPass,
   OrthographicCamera,
   Mesh,
   Scene,
+  PlaneGeometry,
 } from 'three'
 
 import ShaderPass from './ShaderPass'
+import MaskPass from './MaskPass'
+import ClearMaskPass from './ClearMaskPass'
+import CopyShader from 'three-copyshader'
 
 class EffectComposer {
 
-  static camera = TREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 )
+  static camera = new OrthographicCamera( -1, 1, 1, -1, 0, 1 )
   static quad   = new Mesh(new PlaneGeometry( 2, 2 ), null );
-  static scene  = new Scene();
+  static scene  = new Scene()
 
   passes = []
 
@@ -38,7 +39,7 @@ class EffectComposer {
     }
 
     this.renderTarget1 = renderTarget
-    this.renderTarget2 = renderTarget.cloe()
+    this.renderTarget2 = renderTarget.clone()
     this.writeBuffer   = this.renderTarget1
     this.readBuffer    = this.renderTarget2
 
@@ -83,10 +84,9 @@ class EffectComposer {
         }
         this.swapBuffers();
       }
-
       if (pass instanceof MaskPass) {
         maskActive = true;
-      } else if (pass instanceof ClearMaskPass ) {
+      } else if (pass instanceof ClearMaskPass) {
         maskActive = false;
       }
     }
@@ -119,7 +119,7 @@ class EffectComposer {
     renderTarget.width = width;
     renderTarget.height = height;
 
-    this.reset( renderTarget );
+    this.reset(renderTarget);
   }
 }
 
