@@ -3,18 +3,20 @@ import {glitchImageData} from './../canvas/glitch'
 
 function getGlitchStyle(t = 0.2) {
   return {
-    seed:       t*20, // integer between 0 and 99
-    quality:    39,   // integer between 0 and 99
+    seed:       t*100, // integer between 0 and 99
+    quality:    20,   // integer between 0 and 99
     amount:     5,    // integer between 0 and 99
-    iterations: 2     // integer
+    iterations: 10     // integer
   }
 }
 
+let prevWidth = 0;
+
 function done(ctx) {
   return function(imageData) {
-    if (ctx.scaled == null) {
+    if (imageData.width !== prevWidth) {
       ctx.scale(1 / devicePixelRatio, 1 / devicePixelRatio)
-      ctx.scaled = true
+      prevWidth = imageData.width
     }
     ctx.drawImage(imageData, 0, 0)
   }

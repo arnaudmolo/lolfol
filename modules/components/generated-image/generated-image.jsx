@@ -49,7 +49,7 @@ export default class GeneratedImage extends Component {
 
   imageLoaded = context => {
     setTimeout(() => {
-      this.setState({loaded: true, val: 0.7})
+      this.setState({loaded: true, val: 0})
     }, 10)
 
     this.launchInterval()
@@ -57,11 +57,9 @@ export default class GeneratedImage extends Component {
 
   launchInterval() {
     setTimeout(() => {
-      this.setState({val: this.state.val += 0.001})
-      if (this.state.val <= 1) {
-        this.launchInterval()
-      }
-    }, 300)
+      this.setState({val: this.state.val += 0.01})
+      this.launchInterval()
+    }, 800)
   }
 
   getContext = context => {

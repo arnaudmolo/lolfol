@@ -16,7 +16,9 @@ export default class Home extends Component {
 
   render() {
     return (
-      <GeneratedImage src={`/img/face-0.jpg`} width={innerWidth} height={innerHeight} />
+      <div>
+        <GeneratedImage style={{position: 'absolute', left: 0, top: 0}} src={`/img/face-0.jpg`} width={innerWidth} height={innerHeight} />
+      </div>
     );
   }
 }
