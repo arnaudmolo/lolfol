@@ -1,9 +1,16 @@
-import default THREE from 'three';
+import THREE from 'three';
+import ShaderPass from './../utils/ShaderPass'
+
+import BadTVShader from './shaders/BadTVShader'
+import RGBShiftShader from './shaders/RGBShiftShader'
+import FilmShader from './shaders/FilmShader'
+import StaticShader from './shaders/StaticShader'
+
 /**
  * the post processing passes for a BadTV effect
  * - ideas and shaders by @felixturner
  */
-export default function(){
+export default function BadTVPasses(){
 	// add EventDispatcher in this object
 	THREE.EventDispatcher.prototype.apply(this)
 
@@ -12,11 +19,11 @@ export default function(){
 	//////////////////////////////////////////////////////////////////////////////////
 			
 	// create shaders passes
-	var badTVPass	= new THREE.ShaderPass( THREE.BadTVShader );
-	var rgbPass	= new THREE.ShaderPass( THREE.RGBShiftShader );
-	var filmPass	= new THREE.ShaderPass( THREE.FilmShader );
+	var badTVPass	= new ShaderPass(BadTVShader);
+	var rgbPass	= new ShaderPass( RGBShiftShader );
+	var filmPass	= new ShaderPass( FilmShader );
 	filmPass.uniforms[ "grayscale" ].value = 0;
-	var staticPass	= new THREE.ShaderPass( THREE.StaticShader );
+	var staticPass	= new ShaderPass( StaticShader );
 
 	this.addPassesTo	= function(composer){
 		composer.addPass( filmPass );
@@ -103,7 +110,7 @@ export default function(){
 /**
  * parameters for THREEx.BadTVPasses
  */
-Params = function(){
+const Params = function(){
 	var film	= this.film	= {
 		count		: 800,
 		sIntensity	: 0.9,

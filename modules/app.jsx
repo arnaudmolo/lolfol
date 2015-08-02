@@ -6,4 +6,7 @@ import style from "./stylesheet.scss";
 
 import Main from './containers/main';
 
-React.render(<Main />, document.querySelector("#app"));
+import "./threetest.js"
+
+// React.render(<Main />, document.querySelector("#app"));
+
