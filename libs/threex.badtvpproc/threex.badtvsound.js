@@ -28,7 +28,7 @@ export default class BadTVSound {
     this.context     = context
     this.destination = destination
 
-    console.log(this.loadSoundWebAudio(decodedBuffer => this.buffer = decodedBuffer, onError))
+    this.loadSoundWebAudio(decodedBuffer => this.buffer = decodedBuffer, onError)
   }
 
   onError(e) {
