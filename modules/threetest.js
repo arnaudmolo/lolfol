@@ -2,7 +2,7 @@ import THREE, {
   WebGLRenderer,
   Scene,
   OrthographicCamera,
-  PlaneGeometry,
+  PlaneBufferGeometry,
   MeshBasicMaterial,
   Mesh,
   Texture,
@@ -27,15 +27,8 @@ const camera = new OrthographicCamera(innerWidth / - 2, innerWidth / 2, innerHei
 
 camera.position.z = 3
 
-var video    = document.createElement( 'video' );
-video.loop   = true;
-video.volume = 0;
-video.src    = "videos/fits.mp4";
-video.play();
-// create the texture
-
-const geometry = new PlaneGeometry(innerWidth, innerHeight)
-const material = new MeshBasicMaterial({map: ImageUtils.loadTexture('/img/face-0.jpg')})
+const geometry = new PlaneBufferGeometry(innerWidth, innerHeight)
+const material = new MeshBasicMaterial({map: ImageUtils.loadTexture('./img/lol.jpg')})
 const mesh     = new Mesh(geometry, material)
 
 scene.add(mesh)
@@ -44,7 +37,7 @@ const badTVPasses = new BadTVPasses()
 
 onRenderFcts.push(badTVPasses.update)
 
-addBadTVPasses2DatGui(badTVPasses)
+// addBadTVPasses2DatGui(badTVPasses)
 
 const composer = new EffectComposer(renderer)
 const renderPass = new RenderPass(scene, camera)
@@ -68,17 +61,22 @@ onRenderFcts.push(function(delta) {
   composer.render(delta)
 })
 
+// window.addEventListener('mousemove', function({pageX, pageY}) {
+//   badTVPasses.params.badTV.distortion = pageX / innerWidth * 20
+//   badTVPasses.params.rgb.amount = pageY / innerHeight * 0.1
+//   badTVPasses.onParamsChange()
+// }, false)
+
 let lastTimeMsec = null
 
 requestAnimationFrame(function animate(nowMsec){
-    // keep looping
-    requestAnimationFrame(animate);
-    // measure time
-    lastTimeMsec    = lastTimeMsec || nowMsec-1000/60
-    var deltaMsec   = Math.min(200, nowMsec - lastTimeMsec)
-    lastTimeMsec    = nowMsec
-    // call each update function
-    onRenderFcts.forEach(function(onRenderFct){
-        onRenderFct(deltaMsec/1000, nowMsec/1000)
-    })
+  requestAnimationFrame(animate)
+  // measure time
+  lastTimeMsec    = lastTimeMsec || nowMsec-1000/60
+  var deltaMsec   = Math.min(200, nowMsec - lastTimeMsec)
+  lastTimeMsec    = nowMsec
+  // call each update function
+  onRenderFcts.forEach(function(onRenderFct){
+    onRenderFct(deltaMsec / 1000, nowMsec / 1000)
+  })
 })

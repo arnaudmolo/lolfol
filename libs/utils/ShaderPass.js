@@ -13,7 +13,7 @@ export default class ShaderPass {
   enabled        = true
   needsSwap      = true
   clear          = false
-  camera         = new OrthographicCamera( -1, 1, 1, -1, 0, 1 )
+  camera         = new OrthographicCamera(-1, 1, 1, -1, 0, 1 )
   quad           = new Mesh( new PlaneBufferGeometry( 2, 2 ), null )
   
   constructor(shader, textureID) {

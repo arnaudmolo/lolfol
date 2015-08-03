@@ -5,7 +5,7 @@ import THREE, {
   OrthographicCamera,
   Mesh,
   Scene,
-  PlaneGeometry,
+  PlaneBufferGeometry,
 } from 'three'
 
 import ShaderPass from './ShaderPass'
@@ -16,7 +16,7 @@ import CopyShader from 'three-copyshader'
 class EffectComposer {
 
   static camera = new OrthographicCamera( -1, 1, 1, -1, 0, 1 )
-  static quad   = new Mesh(new PlaneGeometry( 2, 2 ), null );
+  static quad   = new Mesh(new PlaneBufferGeometry( 2, 2 ), null );
   static scene  = new Scene()
 
   passes = []

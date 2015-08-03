@@ -18,9 +18,6 @@ export default function addBadTVPasses2DatGui(badTVPasses, datGui){
 	var filmParams	= badTVPasses.params.film
 	var staticParams= badTVPasses.params.staticNoise
 	
-	//////////////////////////////////////////////////////////////////////////////////
-	//		comment								//
-	//////////////////////////////////////////////////////////////////////////////////
 	datGui.add({ presetReset	: function(){
 		badTVPasses.params.reset()
 		badTVPasses.onParamsChange()		

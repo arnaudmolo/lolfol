@@ -6,6 +6,7 @@ import RGBShiftShader from './shaders/RGBShiftShader'
 import FilmShader from './shaders/FilmShader'
 import StaticShader from './shaders/StaticShader'
 
+const {random, PI} = Math
 /**
  * the post processing passes for a BadTV effect
  * - ideas and shaders by @felixturner
@@ -37,9 +38,10 @@ export default class BadTVPasses extends THREE.EventDispatcher {
   }
 
   update = (delta, now) => {
+
     this.badTVPass.uniforms['time'].value  = now
     this.filmPass.uniforms['time'].value   = now
-    this.staticPass.uniforms['time'].value = now
+    // this.staticPass.uniforms['time'].value = now
 
     if(this.tweenStartDate !== null){
       const present = Date.now() / 1000
@@ -52,7 +54,7 @@ export default class BadTVPasses extends THREE.EventDispatcher {
         // console.log('tweening', amount)
         this.params.lerp(this.tweenSrcParams, this.tweenDstParams, amount)
       }
-      this.updateUniforms()  
+      this.updateUniforms()
     }
   }
 
@@ -73,7 +75,7 @@ export default class BadTVPasses extends THREE.EventDispatcher {
       this.staticPass.uniforms["amount"].value = this.params.staticNoise.amount
       this.staticPass.uniforms["size"].value   = this.params.staticNoise.size2
 
-      this.rgbPass.uniforms["angle"].value  = this.params.rgb.angle * Math.PI
+      this.rgbPass.uniforms["angle"].value  = this.params.rgb.angle * PI
       this.rgbPass.uniforms["amount"].value = this.params.rgb.amount
 
       this.filmPass.uniforms["sCount"].value     = this.params.film.count
@@ -108,58 +110,61 @@ class Params {
     size2       : 4.0
   }
 
+  presets = {}
+
   constructor() {
     const presets = {
       reset(){
-        this.badTV.distortion    = 0.1
-        this.badTV.distortion2   = 0.1
-        this.badTV.speed     = 0
-        this.badTV.rollSpeed     = 0
-        this.badTV.randomSeed    = 0
-        this.rgb.angle       = 0
-        this.rgb.amount      = 0
-        this.staticNoise.amount  = 0
-        this.film.count  = 800;
+        console.log('reset');
+        this.badTV.distortion = 0.1
+        this.badTV.distortion2 = 0.1
+        this.badTV.speed = 0
+        this.badTV.rollSpeed = 0
+        this.badTV.randomSeed = 0
+        this.rgb.angle = 0
+        this.rgb.amount = 0
+        this.staticNoise.amount = 0
+        this.film.count = 800;
         this.film.sIntensity = 0.0;
         this.film.nIntensity = 0.0;
       },
       resetInterlace() {
+        console.log('resetInterlace');
         this.presets.reset()
         this.film.count  = 800;
         this.film.sIntensity = 0.9;
         this.film.nIntensity = 0.4;
       },
       light() {
-        this.badTV.distortion    = Math.random()*3+3;
-        this.badTV.distortion2   = Math.random()*1+0.1;
-        this.badTV.randomSeed    = Math.random()*150
-        this.rgb.angle       = Math.random()*10/180*Math.PI*2;
-        this.rgb.amount      = Math.random()*0.02+0.0;
+        console.log('light');
+        this.badTV.distortion = random()*3+3;
+        this.badTV.distortion2 = random()*1+0.1;
+        this.badTV.randomSeed = random()*150
+        this.rgb.angle = random()*10/180*PI*2;
+        this.rgb.amount = random()*0.02+0.0;
       },
       strong() {
-        this.badTV.distortion    = Math.random()*10+0.1;
-        this.badTV.distortion2   = Math.random()*10+0.1;
-        this.badTV.speed     = Math.random()*.4;
-        this.badTV.rollSpeed     = Math.random()*.2;
-        this.rgb.angle       = Math.random()*2;
-        this.rgb.amount      = Math.random()*0.03;
-        this.staticNoise.amount  = Math.random()*0.2;            
+        console.log('strong');
+        this.badTV.distortion = random()*10+0.1;
+        this.badTV.distortion2 = random()*10+0.1;
+        this.badTV.speed = random()*.4;
+        this.badTV.rollSpeed = random()*.2;
+        this.rgb.angle = random()*2;
+        this.rgb.amount = random()*0.03;
+        this.staticNoise.amount = random()*0.2;            
       }
     }
-
-    this.presets = {}
 
     Object.keys(presets).forEach((i, d) => {
       this.presets[i] = presets[i].bind(this);
     })
-
-    this.reset()
 
   }
 
   lerp(srcParams, dstParams, amount) {
     this.film.count      = compute(srcParams.film.count, dstParams.film.count, amount)
     this.film.sIntensity = compute(srcParams.film.sIntensity, dstParams.film.sIntensity, amount)
+    
     this.film.nIntensity = compute(srcParams.film.nIntensity, dstParams.film.nIntensity, amount)
 
     this.badTV.distortion  = compute(srcParams.badTV.distortion, dstParams.badTV.distortion, amount)
@@ -177,21 +182,21 @@ class Params {
   }
 
   copy(other) {
-    this.badTV.distortion   = other.badTV.distortion
-    this.badTV.distortion2  = other.badTV.distortion2
-    this.badTV.speed    = other.badTV.speed
-    this.badTV.rollSpeed    = other.badTV.rollSpeed
-    this.badTV.randomSeed   = other.badTV.randomSeed
+    this.badTV.distortion  = other.badTV.distortion
+    this.badTV.distortion2 = other.badTV.distortion2
+    this.badTV.speed       = other.badTV.speed
+    this.badTV.rollSpeed   = other.badTV.rollSpeed
+    this.badTV.randomSeed  = other.badTV.randomSeed
 
     this.staticNoise.amount = other.staticNoise.amount
     this.staticNoise.size2  = other.staticNoise.size2
 
-    this.rgb.amount     = other.rgb.amount
-    this.rgb.angle      = other.rgb.angle
+    this.rgb.amount = other.rgb.amount
+    this.rgb.angle  = other.rgb.angle
 
-    this.film.count     = other.film.count
-    this.film.sIntensity    = other.film.sIntensity
-    this.film.nIntensity    = other.film.nIntensity
+    this.film.count = other.film.count
+    this.film.sIntensity = other.film.sIntensity
+    this.film.nIntensity = other.film.nIntensity
   }
 
   preset(label) {

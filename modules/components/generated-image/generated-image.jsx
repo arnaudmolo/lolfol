@@ -18,6 +18,7 @@ const divStyle = {
 }
 
 const config = {config: [100, 10]}
+
 const RawCanvasComponent = createCanvasComponent({
   displayName: 'GeneratedImage',
   layerType: 'generatedImage',
@@ -71,10 +72,10 @@ export default class GeneratedImage extends Component {
   }
 
   render() {
-    const {src, width, height} = this.props
+    const {src, width, height, style} = this.props
     const {val, imageContext, loaded} = this.state
     return (
-      <div style={{position: 'absolute', left: 0, top: 0}}>
+      <div style={style}>
         <div style={divStyle}>
           <Surface top={0} left={0} width={width} height={height} getContext={this.getContext}>
             <Image style={{...getImageStyle(), ...{width, height}}} src={src} onLoad={this.imageLoaded}/>

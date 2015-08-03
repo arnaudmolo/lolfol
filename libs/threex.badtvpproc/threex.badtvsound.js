@@ -3,49 +3,57 @@
  * @type {Object}
  */
 
-export default function BadTVSound(context, destination, onLoad, onError){
-	var buffer	= null
-	// start loading the sound
-	var url		= BadTVSound.baseUrl + 'sounds/132834__bekir-virtualdj__electric.mp3'
-	var url		= BadTVSound.baseUrl + 'sounds/19487__halleck__jacobsladdersingle2.wav'
-	loadSoundWebAudio(url, function(decodedBuffer){
-		buffer	= decodedBuffer
-	}, onLoad, onError);
+/*
+ * sounds/19487__halleck__jacobsladdersingle2.wav
+ * sounds/132834__bekir-virtualdj__electric.mp3
+ */
 
-	/**
-	 * test if the sound is ready to be played
-	 * @return {Boolean} true if the sound is ready, false otherwise
-	 */
-	this.isReady	= function(){
-		return buffer === null ? false : true
-	}
-	/**
-	 * play the sound
-	 */
-	this.play	= function(){
-		if( !buffer )	return;
-		// BufferSource
-		var source	= context.createBufferSource();
-		source.buffer	= buffer;
-		source.connect(destination);
-		source.start(0)
-		return source
-	}
-	
-	/**
-	 * Load and decode a sound
-	 */
-	function loadSoundWebAudio(url, onLoad, onError){
-		onLoad	= onLoad	|| function(){}
-		onError	= onError	|| function(){}
-		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
-		request.responseType = 'arraybuffer';
-		request.onload = function() {
-			context.decodeAudioData(request.response, onLoad, onError);
-		}
-		request.send();
-	}
+function decodeAudioData(context, onLoad, onError) {
+  return function(arraybuffer) {
+    context.decodeAudioData(arraybuffer, onLoad, onError)
+  }
 }
 
-BadTVSound.baseUrl	= '../'
+export default class BadTVSound {
+
+  static baseUrl = '../'
+
+  buffer      = null
+  context     = null
+  destination = null
+  url         = `${BadTVSound.baseUrl}./sounds/19487__halleck__jacobsladdersingle2.wav`
+
+  constructor(context, destination, onLoad, onError) {
+
+    this.context     = context
+    this.destination = destination
+
+    console.log(this.loadSoundWebAudio(decodedBuffer => this.buffer = decodedBuffer, onError))
+  }
+
+  onError(e) {
+    console.warn('error', e)
+  }
+
+  async loadSoundWebAudio(onLoad = this.onLoad, onError = this.onError) {
+    return fetch(this.url)
+      .then((response) => response.arrayBuffer())
+      .then(decodeAudioData(this.context, onLoad, onError))
+  }
+
+  isReady() {
+    return this.buffer != null
+  }
+
+  play() {
+    if (!this.isReady()) {
+      console.log('buffer is not loaded')
+      return
+    }
+    const source = this.context.createBufferSource()
+    source.buffer = this.buffer
+    source.connect(this.destination)
+    source.start(0)
+    return source
+  }
+}
