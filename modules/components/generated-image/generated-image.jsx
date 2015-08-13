@@ -49,8 +49,12 @@ export default class GeneratedImage extends Component {
   }
 
   imageLoaded = context => {
+
+    const {getCanvas} = this.props
+
     setTimeout(() => {
       this.setState({loaded: true, val: 0})
+      getCanvas && getCanvas(findDOMNode(this.refs.canvas));
     }, 10)
 
     this.launchInterval()
@@ -82,7 +86,7 @@ export default class GeneratedImage extends Component {
           </Surface>
         </div>
         <div style={{width: width, height: height, ...divStyle}}>
-          <Surface top={0} left={0} width={width} height={height} style={{opacity: 0}}>
+          <Surface ref='canvas' top={0} left={0} width={width} height={height} style={{opacity: 0}}>
             {loaded?(
               <RawCanvasComponent t={val} imageContext={imageContext} width={width} height={height} />
             ):null}

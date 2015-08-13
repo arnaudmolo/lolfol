@@ -15,9 +15,12 @@ import EffectComposer from './../../../libs/utils/EffectComposer'
 import RenderPass from './../../../libs/utils/RenderPass'
 import BadTVJamming from './../../../libs/threex.badtvpproc/threex.badtvjamming'
 
+const raf = window.requestAnimationFrame
+
 export default class TVThree extends Component {
 
   tvEffect = new BadTVPasses()
+  mesh     = null
 
   componentDidMount() {
 
@@ -35,7 +38,7 @@ export default class TVThree extends Component {
 
     camera.position.z = 3
 
-    const texture   = ImageUtils.loadTexture('./img/lol.jpg')
+    const texture   = ImageUtils.loadTexture(src)
 
     texture.minFilter = THREE.LinearFilter
 
@@ -61,37 +64,40 @@ export default class TVThree extends Component {
     const context = new AudioContext()
     const badTVJamming = new BadTVJamming(badTVPasses, context)
 
-    // document.querySelector('canvas').addEventListener('click', function() {
-    //   badTVJamming.preset('lightNoScroll')
-    // })
-
     onRenderFcts.push(function(delta) {
       composer.render(delta)
     })
 
-    // window.addEventListener('mousemove', function({pageX, pageY}) {
-    //   badTVPasses.params.badTV.distortion = pageX / width * 20
-    //   badTVPasses.params.rgb.amount = pageY / height * 0.1
-    //   badTVPasses.onParamsChange()
-    // }, false)
-
     let lastTimeMsec = null
 
-    requestAnimationFrame(function animate(nowMsec){
-      requestAnimationFrame(animate)
+
+    this.rafID = raf(function animate(nowMsec){
+      raf(animate)
       // measure time
-      lastTimeMsec    = lastTimeMsec || nowMsec-1000/60
-      var deltaMsec   = Math.min(200, nowMsec - lastTimeMsec)
-      lastTimeMsec    = nowMsec
+      lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+      var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+      lastTimeMsec  = nowMsec
       // call each update function
       onRenderFcts.forEach(function(onRenderFct){
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
       })
     })
+    this.interactor = badTVJamming
+    this.mesh = mesh
   }
 
-  onClick() {
-    console.log('"log"');
+  componentWillUnmount() {
+    cancelAnimationFrame(this.rafID)
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const {src} = nextProps
+    this.mesh.material.map = ImageUtils.loadTexture(src)
+    this.mesh.material.needsUpdate = true
+  }
+
+  _onClick = () => {
+    this.interactor.preset('lightNoScroll')
   }
 
   render() {
