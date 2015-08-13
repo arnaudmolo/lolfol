@@ -17,6 +17,7 @@
     "extract-text-webpack-plugin": "^0.8.2",
     "html-webpack-plugin": "^1.5.2",
     "ncp": "^2.0.0",
+    "nk-css-reset": "^1.0.1",
     "node-libs-browser": "^0.5.2",
     "node-sass": "^3.2.0",
     "react": "^0.13.3",

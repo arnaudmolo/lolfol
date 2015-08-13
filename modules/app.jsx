@@ -1,8 +1,8 @@
-import "babel/polyfill";
-import React from "react";
+import "babel/polyfill"
+import React from "react"
 
-import Main from './containers/main';
+import Main from './containers/main'
 
-// import "./threetest.js"
+import "./stylesheet.scss"
 
-React.render(<Main />, document.querySelector("#app"));
+React.render(<Main />, document.querySelector("#app"))

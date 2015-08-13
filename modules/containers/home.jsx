@@ -17,6 +17,7 @@ function getImageStyle() {
     left: 0,
     right: 0,
     maxHeight: innerHeight,
+    maxWidth: innerWidth,
     pointerEvents: 'none'
   })
 }
@@ -29,9 +30,7 @@ export default class Home extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      src: img1
-    }
+    this.state = {src: img1}
   }
 
   onClick = () => {
@@ -43,10 +42,9 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div style={create({position: 'absolute', left: 0, right: 0, width: "100%", height: "100%"})}
-        onClick={this.onClick}
+      <div style={create({position: 'fixed', left: 0, right: 0, width: "100%", height: "100%"})}
+        onTouch={this.onClick}
       >
-        <img src="./img/crt.png" height={innerHeight} style={getImageStyle()} />
         <TV width={innerWidth} height={innerHeight} src={this.state.src} />
       </div>
     )

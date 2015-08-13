@@ -39,7 +39,7 @@ const devConfig = {
 
 // start dev-server based on webpack with the config
 new WebpackDevServer(webpack(config), devConfig)
-    .listen(serverPort, 'localhost', function (err, result) {
+    .listen(serverPort, '0.0.0.0', function (err, result) {
         if (err) console.log(err);
 
         console.log('    ___   _ _____ ___   _______   _____ ___ ')
@@ -47,5 +47,5 @@ new WebpackDevServer(webpack(config), devConfig)
         console.log('   | |) / _ \\| |/ _ \\ V /| _| \\ V /| _|\\__ \\')
         console.log('   |___/_/ \\_\\_/_/ \\_\\_/ |___| |_| |___|___/ \n');
 
-        console.log('   Listening at localhost:'+serverPort);
+        console.log('   Listening at 0.0.0.0:'+serverPort);
     });

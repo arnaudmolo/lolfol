@@ -17,6 +17,8 @@ import BadTVJamming from './../../../libs/threex.badtvpproc/threex.badtvjamming'
 
 const raf = window.requestAnimationFrame
 
+const AudioContext = window.AudioContext || window.webkitAudioContext
+
 export default class TVThree extends Component {
 
   tvEffect = new BadTVPasses()
@@ -70,12 +72,11 @@ export default class TVThree extends Component {
 
     let lastTimeMsec = null
 
-
     this.rafID = raf(function animate(nowMsec){
       raf(animate)
       // measure time
       lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
-      var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+      let deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
       lastTimeMsec  = nowMsec
       // call each update function
       onRenderFcts.forEach(function(onRenderFct){
@@ -101,9 +102,12 @@ export default class TVThree extends Component {
   }
 
   render() {
+
+    const {width, height} = this.props
+
     return (
-      <div  onClick={this._onClick}>
-        <canvas />
+      <div onClick={this._onClick} style={this.props.style} >
+        <canvas width={width} height={height} />
       </div>
     )
   }
