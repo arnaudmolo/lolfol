@@ -16,7 +16,7 @@
 
 import BadTVSound from './threex.badtvsound'
 
-export default class BadTVJamming {
+class BadTVJamming {
 
   /**
    * true if a jamming is in progress, false otherwise
@@ -39,6 +39,8 @@ export default class BadTVJamming {
     console.assert( typeof(passesLastLabel) === 'string' )
     console.assert( typeof(nShakeSteps) === 'number' )
     console.assert( typeof(tweenDelay) === 'number' )
+
+    console.log('trigger');
 
     if (this.inProgress) {
       return
@@ -74,4 +76,8 @@ export default class BadTVJamming {
     var presetArgs  = this.presets[label]
     this.trigger.apply(this, presetArgs)
   }
+}
+
+export default function factory(...r) {
+  return new BadTVJamming(...r)
 }

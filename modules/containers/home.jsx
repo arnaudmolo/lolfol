@@ -71,7 +71,6 @@ export default class Home extends Component {
   }
 
   onTap = (event) => {
-    console.log('onTap');
     open(projects[this.state.index].url)
   }
 
@@ -80,7 +79,6 @@ export default class Home extends Component {
   }
 
   render() {
-    console.log(this.state.index, projects[this.state.index]);
     return (
       <div style={create({position: 'fixed', left: 0, right: 0, width: "100%", height: "100%"})} >
         <Hammer onSwipe={this.onSwipe} options={options} onTap={this.onTap} >

@@ -64,7 +64,6 @@ export default class TVThree extends Component {
     composer.passes[composer.passes.length - 1].renderToScreen = true
 
     const context = new AudioContext()
-    const badTVJamming = new BadTVJamming(badTVPasses, context)
 
     onRenderFcts.push(function(delta) {
       composer.render(delta)
@@ -83,7 +82,7 @@ export default class TVThree extends Component {
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
       })
     })
-    this.interactor = badTVJamming
+    this.interactor = BadTVJamming(badTVPasses, context)
     this.mesh = mesh
   }
 
@@ -98,7 +97,7 @@ export default class TVThree extends Component {
   }
 
   _onClick = () => {
-    this.interactor.preset('lightNoScroll')
+    this.interactor.preset('strongScrolly')
   }
 
   render() {
