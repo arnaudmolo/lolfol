@@ -51,7 +51,6 @@ export default class BadTVPasses extends THREE.EventDispatcher {
         this.dispatchEvent({type: 'tweenCompleted'})
       } else {
         const amount = (present - this.tweenStartDate) / this.tweenDelay
-        // console.log('tweening', amount)
         this.params.lerp(this.tweenSrcParams, this.tweenDstParams, amount)
       }
       this.updateUniforms()
@@ -115,7 +114,6 @@ class Params {
   constructor() {
     const presets = {
       reset(){
-        console.log('reset');
         this.badTV.distortion = 0.1
         this.badTV.distortion2 = 0.1
         this.badTV.speed = 0
@@ -129,14 +127,12 @@ class Params {
         this.film.nIntensity = 0.0;
       },
       resetInterlace() {
-        console.log('resetInterlace');
         this.presets.reset()
         this.film.count  = 800;
         this.film.sIntensity = 0.9;
         this.film.nIntensity = 0.4;
       },
       light() {
-        console.log('light');
         this.badTV.distortion = random()*3+3;
         this.badTV.distortion2 = random()*1+0.1;
         this.badTV.randomSeed = random()*150
@@ -144,7 +140,6 @@ class Params {
         this.rgb.amount = random()*0.02+0.0;
       },
       strong() {
-        console.log('strong');
         this.badTV.distortion = random()*10+0.1;
         this.badTV.distortion2 = random()*10+0.1;
         this.badTV.speed = random()*.4;
@@ -200,7 +195,6 @@ class Params {
   }
 
   preset(label) {
-    console.assert(label in this.presets === true)
     this.presets[label]()
   }
 

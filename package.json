@@ -40,6 +40,7 @@
     "object-assign": "^3.0.0",
     "react": "^0.13.3",
     "react-canvas": "git://github.com/arnaudmolo/react-canvas.git#custom-react-component",
+    "react-hammerjs": "^0.2.2",
     "react-motion": "^0.1.0",
     "react-style": "^0.5.5",
     "redux": "^0.12.0",

@@ -106,7 +106,7 @@ export default class TVThree extends Component {
     const {width, height} = this.props
 
     return (
-      <div onClick={this._onClick} style={this.props.style} >
+      <div onClick={this._onClick} onTouchEnd={this._onClick} style={this.props.style} >
         <canvas width={width} height={height} />
       </div>
     )

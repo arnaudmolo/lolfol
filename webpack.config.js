@@ -11,7 +11,7 @@ const buildPath = path.resolve(__dirname, "build");
 
 const hotScripts = [
   // WebpackDevServer host and port
-  'webpack-dev-server/client?http://0.0.0.0:8080',
+  'webpack-dev-server/client?http://172.20.10.2:8080',
   // WebpackDevServer hot reload
   'webpack/hot/only-dev-server'
 ];

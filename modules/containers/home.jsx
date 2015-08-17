@@ -2,14 +2,39 @@ import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'redux/react'
 import {create} from 'react-style'
+import Hammer from 'react-hammerjs'
 
 import * as HomeActions from './../actions/home-actions'
 
 import GeneratedImage from './../components/generated-image/generated-image'
 import TV from './../components/three/tv'
 
-const img1 = './img/lol.jpg'
-const img2 = './img/face-0.jpg'
+const projects = [
+  {
+    src: './img/face-0.jpg',
+    url: '_blanck'
+  }, {
+    src: './img/face-1.jpg',
+    url: '_blanck'
+  }, {
+    src: './img/face-2.jpg',
+    url: '_blanck'
+  }, {
+    src: './img/face-3.jpg',
+    url: '_blanck'
+  }]
+
+const options = {
+  touchAction:true,
+  recognizers: {
+    swipe: {
+      threshold: 50
+    },
+    tap: {
+      threshold: 300
+    }
+  }
+}
 
 function getImageStyle() {
   return create({
@@ -30,22 +55,37 @@ export default class Home extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = {src: img1}
+    this.state = {index: 0}
   }
 
-  onClick = () => {
-    if (this.state.src === img1) {
-      return this.setState({src: img2})
+  increaseProject(increase) {
+
+    const {index} = this.state
+
+    if (increase && index <= 3) {
+      return this.setState({index: index + 1})
     }
-    this.setState({src: img1})
+    if (index >= 0) {
+      return this.setState({index: index - 1})
+    }
+  }
+
+  onTap = (event) => {
+    console.log('onTap');
+    open(projects[this.state.index].url)
+  }
+
+  onSwipe = (event) => {
+    this.increaseProject(event.deltaX<=0)
   }
 
   render() {
+    console.log(this.state.index, projects[this.state.index]);
     return (
-      <div style={create({position: 'fixed', left: 0, right: 0, width: "100%", height: "100%"})}
-        onTouch={this.onClick}
-      >
-        <TV width={innerWidth} height={innerHeight} src={this.state.src} />
+      <div style={create({position: 'fixed', left: 0, right: 0, width: "100%", height: "100%"})} >
+        <Hammer onSwipe={this.onSwipe} options={options} onTap={this.onTap} >
+          <TV width={innerWidth} height={innerHeight} src={projects[this.state.index].src} />
+        </Hammer>
       </div>
     )
   }
